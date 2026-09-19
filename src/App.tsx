@@ -1,15 +1,20 @@
-import { AuthProvider } from "./context/authContext";
+import { Routes, Route } from "react-router-dom";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import Dashboard from "./pages/Dashboard";
 
 
-function App() {
+function App(): JSX.Element {
   return (
-    <AuthProvider>
-      <main>
-        <h1>MateCode</h1>
-        <p>Gestión de tareas para pequeñas empresas</p>
-      </main>
-    </AuthProvider>
-  )
+    <>
+      <Routes>
+
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+      </Routes>
+    </>
+  );
 }
 
-export default App
+export default App;
