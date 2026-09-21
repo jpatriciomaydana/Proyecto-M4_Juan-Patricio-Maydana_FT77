@@ -10,6 +10,7 @@ import {
     onAuthStateChanged,
     signInWithPopup,
     GoogleAuthProvider,
+    updateProfile,
 } from "firebase/auth";
 
 
@@ -31,8 +32,18 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }, []); // [] significa: "ejecutá esto una sola vez cuando la app arranca"
 
     // nuevo usuario
-    async function register(email: string, password: string) {
-        await createUserWithEmailAndPassword(auth, email, password);
+    async function register(name: string, email: string, password: string) {
+        const userCredential = await createUserWithEmailAndPassword(
+            auth,
+            email,
+            password
+        );
+
+        await updateProfile(userCredential.user, {
+            displayName: name,
+        });
+        //console.log("Usuario registrado:"
+        setUser(userCredential.user);
     }
 
     // usuario existente
