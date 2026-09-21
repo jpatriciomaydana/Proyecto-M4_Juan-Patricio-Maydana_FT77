@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useAuth } from "../hooks/useAuth";
+import { useNavigate } from "react-router-dom";
 
 interface LoginForm {
     email: string;
@@ -32,6 +33,7 @@ function validateLogin(form: LoginForm) {
 
 export const Login = () => {
     const { login, loginWithGoogle } = useAuth();
+    const navigate = useNavigate();
 
     const [form, setForm] = useState<LoginForm>(initialLoginForm);
     const [error, setError] = useState<Partial<Record<keyof LoginForm, string>>>({});
@@ -65,6 +67,7 @@ export const Login = () => {
 
         try {
             await login(form.email, form.password);
+            navigate("/dashboard");
         } catch (error) {
             setError({
                 email: "No se pudo iniciar sesión. Revisá tus credenciales.",

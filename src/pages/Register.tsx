@@ -55,7 +55,7 @@ export function Register() {
         setLoading(true);
 
         try {
-            await register(form.email, form.password);
+            await register(form.name, form.email, form.password);
             navigate("/dashboard");
         }
         catch (err) {
