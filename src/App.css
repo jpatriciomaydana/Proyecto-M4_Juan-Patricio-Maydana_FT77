@@ -1,0 +1,299 @@
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600&family=Nunito+Sans:wght@400;600;700&display=swap');
+
+:root {
+    --color-tierra: #2B2118;
+    --color-musgo: #3E5C43;
+    --color-brote: #8FBF6F;
+    --color-amapola: #E85D75;
+    --color-sol: #F4C95D;
+    --color-neblina: #EDF3E8;
+    --color-muted: #6b5c4f;
+    --font-display: 'Fraunces', serif;
+    --font-body: 'Nunito Sans', sans-serif;
+    --radius-sm: 10px;
+    --radius-md: 16px;
+    --shadow-soft: 0 2px 6px rgba(43, 33, 24, 0.06);
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    font-family: var(--font-body);
+    color: var(--color-tierra);
+    background-color: var(--color-neblina);
+    /* Fondo decorativo: hojas dispersas, embebido como SVG (no depende de ningún archivo externo) */
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cpath d='M14 44c10-24 32-24 42 0-10-8-32-8-42 0z' fill='%238FBF6F' fill-opacity='0.08'/%3E%3Cpath d='M50 14c10 10 10 26 0 36-6-12-6-24 0-36z' fill='%23E85D75' fill-opacity='0.06'/%3E%3C/svg%3E");
+    background-repeat: repeat;
+    background-size: 80px 80px;
+    -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3 {
+    font-family: var(--font-display);
+    font-weight: 500;
+    margin: 0;
+}
+
+p {
+    margin: 0;
+}
+
+button,
+input,
+textarea {
+    font-family: inherit;
+}
+
+/* ---------- Layout base ---------- */
+
+.app-container {
+    width: 100%;
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 1rem;
+    min-height: 100vh;
+}
+
+.app-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.25rem;
+    gap: 0.75rem;
+}
+
+.app-header-user {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+    border: 2px solid #fff;
+    box-shadow: var(--shadow-soft);
+}
+
+.greeting-title {
+    font-size: 1.05rem;
+}
+
+.greeting-subtitle {
+    font-size: 0.75rem;
+    color: var(--color-muted);
+}
+
+.icon-button {
+    background: none;
+    border: none;
+    color: var(--color-muted);
+    cursor: pointer;
+    padding: 6px;
+}
+
+/* ---------- Streak / gamificación ---------- */
+
+.streak-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--color-sol);
+    color: #412402;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 20px;
+    margin-bottom: 1rem;
+}
+
+/* ---------- Formulario para agregar tarea ---------- */
+
+.task-form {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 1.25rem;
+}
+
+.task-input {
+    flex: 1;
+    height: 42px;
+    border-radius: 21px;
+    border: 1px solid #d8dfd0;
+    padding: 0 14px;
+    font-size: 0.9rem;
+    background: #fff;
+    color: var(--color-tierra);
+}
+
+.task-input:focus {
+    outline: none;
+    border-color: var(--color-musgo);
+}
+
+.btn-add {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    border: none;
+    background: var(--color-amapola);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+/* ---------- Lista de tareas ---------- */
+
+.section-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--color-muted);
+    margin: 0 0 8px;
+}
+
+.task-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 1.5rem;
+}
+
+.task-card {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #fff;
+    border-radius: var(--radius-sm);
+    padding: 12px 14px;
+    box-shadow: var(--shadow-soft);
+    transition: transform 0.15s ease, opacity 0.15s ease;
+}
+
+.task-card:nth-child(3n+1) {
+    transform: rotate(-1.2deg);
+}
+
+.task-card:nth-child(3n+2) {
+    transform: rotate(1deg);
+}
+
+.task-card:nth-child(3n+3) {
+    transform: rotate(-0.5deg);
+}
+
+.task-card.completed {
+    background: #e4ece0;
+    transform: none;
+}
+
+.task-card.completed .task-title {
+    color: #8c8577;
+    text-decoration: line-through;
+}
+
+.task-checkbox {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 2px solid var(--color-musgo);
+    flex-shrink: 0;
+    cursor: pointer;
+    background: transparent;
+}
+
+.task-checkbox.checked {
+    background: var(--color-brote);
+    border-color: var(--color-brote);
+}
+
+.task-title {
+    font-size: 0.9rem;
+    flex: 1;
+}
+
+.task-delete {
+    color: #b8ada0;
+    cursor: pointer;
+    background: none;
+    border: none;
+}
+
+/* ---------- Estado vacío ---------- */
+
+.empty-state {
+    text-align: center;
+    padding: 2.5rem 1rem;
+    color: var(--color-muted);
+}
+
+.empty-state h3 {
+    color: var(--color-tierra);
+    margin-bottom: 0.35rem;
+}
+
+/* ---------- Responsive: tablet ---------- */
+
+@media (min-width: 640px) {
+    .app-container {
+        max-width: 600px;
+        padding: 2rem;
+    }
+
+    .greeting-title {
+        font-size: 1.25rem;
+    }
+
+    .task-input {
+        height: 44px;
+    }
+}
+
+/* ---------- Responsive: desktop ---------- */
+
+@media (min-width: 1024px) {
+    .app-container {
+        max-width: 720px;
+        padding: 2.5rem;
+    }
+
+    .task-list {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 14px;
+    }
+
+    .task-card:nth-child(odd) {
+        transform: rotate(-1deg);
+    }
+
+    .task-card:nth-child(even) {
+        transform: rotate(1deg);
+    }
+}
+
+/* Respeta la preferencia de movimiento reducido del usuario */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        transition: none !important;
+        animation: none !important;
+    }
+}
