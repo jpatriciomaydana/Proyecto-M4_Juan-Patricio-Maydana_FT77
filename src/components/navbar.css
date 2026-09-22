@@ -1,0 +1,197 @@
+/* =========================================
+   NAVBAR
+   ========================================= */
+
+.navbar {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+
+    padding: 1rem 1.5rem;
+    margin-bottom: 1.5rem;
+
+    background: #fff;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-soft);
+}
+
+/* =========================================
+   MARCA
+   ========================================= */
+
+.navbar-brand a {
+    color: var(--color-tierra);
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 600;
+    text-decoration: none;
+
+    transition:
+        color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.navbar-brand a:hover {
+    color: var(--color-musgo);
+}
+
+.navbar-brand a:focus-visible {
+    outline: 2px solid var(--color-musgo);
+    outline-offset: 4px;
+    border-radius: 4px;
+}
+
+/* =========================================
+   ACCIONES
+   ========================================= */
+
+.navbar-actions {
+    display: flex;
+    align-items: center;
+}
+
+/* =========================================
+   USUARIO AUTENTICADO
+   ========================================= */
+
+.navbar-user {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.navbar-email {
+    max-width: 260px;
+
+    color: var(--color-muted);
+    font-size: 0.85rem;
+    font-weight: 600;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* =========================================
+   BOTÓN CERRAR SESIÓN
+   ========================================= */
+
+.btn-logout {
+    border: none;
+    border-radius: var(--radius-sm);
+
+    padding: 0.55rem 0.9rem;
+
+    background: var(--color-musgo);
+    color: #fff;
+
+    font-family: inherit;
+    font-size: 0.8rem;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        background-color 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.btn-logout:hover {
+    background: var(--color-tierra);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-soft);
+}
+
+.btn-logout:focus-visible {
+    outline: 2px solid var(--color-brote);
+    outline-offset: 3px;
+}
+
+/* =========================================
+   LINKS — USUARIO NO AUTENTICADO
+   ========================================= */
+
+.navbar-links {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.nav-link {
+    color: var(--color-musgo);
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-decoration: none;
+
+    padding: 0.5rem 0.7rem;
+    border-radius: var(--radius-sm);
+
+    transition:
+        color 0.2s ease,
+        background-color 0.2s ease;
+}
+
+.nav-link:hover {
+    color: var(--color-tierra);
+    background: var(--color-neblina);
+}
+
+.nav-link:focus-visible {
+    outline: 2px solid var(--color-musgo);
+    outline-offset: 2px;
+}
+
+/* =========================================
+   RESPONSIVE
+   ========================================= */
+
+@media (max-width: 639px) {
+    .navbar {
+        padding: 0.85rem 1rem;
+    }
+
+    .navbar-brand a {
+        font-size: 1.3rem;
+    }
+
+    .navbar-user {
+        gap: 0.5rem;
+    }
+
+    .navbar-email {
+        max-width: 140px;
+    }
+
+    .btn-logout {
+        padding: 0.5rem 0.7rem;
+        font-size: 0.75rem;
+    }
+
+    .navbar-links {
+        gap: 0.25rem;
+    }
+
+    .nav-link {
+        padding: 0.45rem 0.5rem;
+        font-size: 0.75rem;
+    }
+}
+
+@media (max-width: 420px) {
+    .navbar {
+        align-items: flex-start;
+    }
+
+    .navbar-user,
+    .navbar-links {
+        flex-direction: column;
+        align-items: flex-end;
+    }
+
+    .navbar-email {
+        max-width: 120px;
+    }
+}
