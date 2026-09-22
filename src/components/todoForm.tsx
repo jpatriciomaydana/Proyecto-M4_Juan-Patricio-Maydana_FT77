@@ -46,8 +46,9 @@ export const TodoForm = ({
     };
 
     return (
-        <form onSubmit={handleSubmit}>
+        <form className="task-form" onSubmit={handleSubmit}>
             <input
+                className="task-input"
                 type="text"
                 placeholder="Título de la tarea"
                 value={title}
@@ -55,17 +56,15 @@ export const TodoForm = ({
             />
 
             <textarea
+                className="task-input task-description-input"
                 placeholder="Descripción (opcional)"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
             />
 
-            <button type="submit">
-                {mode === "create"
-                    ? "Agregar tarea"
-                    : "Guardar cambios"}
+            <button className="btn-add" type="submit">
+                {mode === "create" ? "+" : "✓"}
             </button>
         </form>
     );
 };
-

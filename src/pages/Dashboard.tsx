@@ -12,7 +12,7 @@ import { subscribeToTodos, type Todo, } from "../services/todoService";
 import { TodoForm } from "../components/todoForm";
 
 function Dashboard() {
-    const { user, logout } = useAuth();
+    const { user } = useAuth();
 
     const [todos, setTodos] = useState<Todo[]>([]);
     const [loading, setLoading] = useState(true);
@@ -111,17 +111,23 @@ function Dashboard() {
     }
 
     return (
-        <main>
-            <h1>Panel de Tareas</h1>
+        <main className="app-container">
+            <header className="app-header">
+                <div className="app-header-user">
+                    <div>
+                        <h1 className="greeting-title">
+                            Bienvenido{" "}
+                            {user?.displayName || user?.email}
+                        </h1>
 
-            <p>
-                Bienvenido{" "}
-                {user?.displayName || user?.email}
-            </p>
+                        <p className="greeting-subtitle">
+                            Panel de tareas
+                        </p>
+                    </div>
+                </div>
 
-            <button onClick={logout}>
-                Cerrar sesión
-            </button>
+
+            </header>
 
             {editingTodo ? (
                 <TodoForm
@@ -144,44 +150,63 @@ function Dashboard() {
             {todos.length === 0 ? (
                 <p>No tenés tareas todavía.</p>
             ) : (
-                <ul>
+                <ul className="task-list">
                     {todos.map((todo) => (
-                        <li key={todo.id}>
-                            <h3>{todo.title}</h3>
-
-                            <p>{todo.description}</p>
-
-                            <p>
-                                Estado:{" "}
-                                {todo.completed
-                                    ? "Completada"
-                                    : "Pendiente"}
-                            </p>
-
+                        <li
+                            key={todo.id}
+                            className={`task-card ${todo.completed ? "completed" : ""}`}
+                        >
+                            {/* Zona izquierda */}
                             <button
+                                className={`task-checkbox ${todo.completed ? "checked" : ""}`}
                                 onClick={() =>
-                                    handleToggleTodo(
-                                        todo.id,
-                                        todo.completed
-                                    )
+                                    handleToggleTodo(todo.id, todo.completed)
+                                }
+                                type="button"
+                                aria-label={
+                                    todo.completed
+                                        ? "Marcar tarea como pendiente"
+                                        : "Completar tarea"
                                 }
                             >
-                                {todo.completed
-                                    ? "Marcar pendiente"
-                                    : "Completar"}
+                                {todo.completed && "✓"}
                             </button>
 
-                            <button onClick={() => setEditingTodo(todo)}>
-                                Editar
-                            </button>
+                            {/* Zona central:*/}
+                            <div className="task-content">
+                                <h3 className="task-title">{todo.title}</h3>
 
-                            <button
-                                onClick={() =>
-                                    handleDeleteTodo(todo.id)
-                                }
-                            >
-                                Eliminar
-                            </button>
+                                {todo.description && (
+                                    <p className="task-description">
+                                        {todo.description}
+                                    </p>
+                                )}
+
+                                <span className="task-status">
+                                    {todo.completed ? "Completada" : "Pendiente"}
+                                </span>
+                            </div>
+
+                            {/* Zona derecha */}
+                            <div className="task-actions">
+                                <button
+                                    className="task-edit"
+                                    onClick={() => setEditingTodo(todo)}
+                                    type="button"
+                                    aria-label="Editar tarea"
+                                >
+                                    ✏️
+                                </button>
+
+                                <button
+                                    className="task-delete"
+                                    onClick={() => handleDeleteTodo(todo.id)}
+                                    type="button"
+                                    aria-label="Eliminar tarea"
+                                >
+                                    🗑️
+                                </button>
+                            </div>
                         </li>
                     ))}
                 </ul>
