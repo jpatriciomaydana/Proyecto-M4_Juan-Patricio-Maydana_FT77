@@ -2,10 +2,8 @@ import { Navigate, Outlet } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 
 interface ProtectedRouteProps {
-    /**
-     * Ruta a la cual redirigir si el usuario no está autenticado.
-     * Por defecto es "/login".
-     */
+    /* Ruta a la cual redirigir si el usuario no está autenticado.
+     * Por defecto es "/login".*/
     redirectTo?: string;
 }
 

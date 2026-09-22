@@ -17,6 +17,7 @@ function Dashboard() {
     const [todos, setTodos] = useState<Todo[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
+    const [editingTodo, setEditingTodo] = useState<Todo | null>(null);
 
     useEffect(() => {
         if (!user) {
@@ -40,8 +41,9 @@ function Dashboard() {
     }, [user]);
 
     const handleAddTodo = async (title: string, description: string) => {
-        // Lógica para guardar en Firestore utilizando title y description
-        if (!user) return;
+        if (!user) {
+            throw new Error("No hay usuario autenticado");
+        }
 
         try {
             await addDoc(collection(db, "todos"), {
@@ -53,6 +55,27 @@ function Dashboard() {
         } catch (error) {
             console.error(error);
             setError("No se pudo crear la tarea");
+            throw error;
+        }
+    };
+
+    const handleEditTodo = async (
+        todoId: string,
+        title: string,
+        description: string
+    ) => {
+        try {
+            const todoRef = doc(db, "todos", todoId);
+
+            await updateDoc(todoRef, {
+                title,
+                description,
+            });
+
+            setEditingTodo(null);
+        } catch (error) {
+            console.error(error);
+            setError("No se pudo editar la tarea");
         }
     };
 
@@ -100,7 +123,21 @@ function Dashboard() {
                 Cerrar sesión
             </button>
 
-            <TodoForm onAddTodo={handleAddTodo} />
+            {editingTodo ? (
+                <TodoForm
+                    mode="edit"
+                    todoId={editingTodo.id}
+                    initialTitle={editingTodo.title}
+                    initialDescription={editingTodo.description}
+                    onEditTodo={handleEditTodo}
+                />
+            ) : (
+
+                <TodoForm
+                    mode="create"
+                    onAddTodo={handleAddTodo}
+                />
+            )}
 
             {error && <p>{error}</p>}
 
@@ -132,6 +169,10 @@ function Dashboard() {
                                 {todo.completed
                                     ? "Marcar pendiente"
                                     : "Completar"}
+                            </button>
+
+                            <button onClick={() => setEditingTodo(todo)}>
+                                Editar
                             </button>
 
                             <button

@@ -1,19 +1,48 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { FormEvent } from "react";
 
 interface TodoFormProps {
-    onAddTodo: (title: string, description: string) => void;
+    mode: "create" | "edit";
+    onAddTodo?: (title: string, description: string) => Promise<void>;
+    onEditTodo?: (
+        id: string,
+        title: string,
+        description: string
+    ) => Promise<void>;
+    todoId?: string;
+    initialTitle?: string;
+    initialDescription?: string;
 }
 
-export const TodoForm = ({ onAddTodo }: TodoFormProps) => {
-    const [title, setTitle] = useState("");
-    const [description, setDescription] = useState("");
+export const TodoForm = ({
+    mode,
+    onAddTodo,
+    onEditTodo,
+    todoId,
+    initialTitle = "",
+    initialDescription = "",
+}: TodoFormProps) => {
+    const [title, setTitle] = useState(initialTitle);
+    const [description, setDescription] = useState(initialDescription);
 
-    const handleSubmit = (e: FormEvent) => {
+    useEffect(() => {
+        setTitle(initialTitle);
+        setDescription(initialDescription);
+    }, [initialTitle, initialDescription]);
+
+    const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
-        onAddTodo(title, description);
-        setTitle("");
-        setDescription("");
+
+        if (mode === "create" && onAddTodo) {
+            await onAddTodo(title, description);
+
+            setTitle("");
+            setDescription("");
+        }
+
+        if (mode === "edit" && onEditTodo && todoId) {
+            await onEditTodo(todoId, title, description);
+        }
     };
 
     return (
@@ -24,12 +53,19 @@ export const TodoForm = ({ onAddTodo }: TodoFormProps) => {
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
             />
+
             <textarea
                 placeholder="Descripción (opcional)"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
             />
-            <button type="submit">Agregar tarea</button>
+
+            <button type="submit">
+                {mode === "create"
+                    ? "Agregar tarea"
+                    : "Guardar cambios"}
+            </button>
         </form>
     );
 };
+
