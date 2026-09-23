@@ -91,7 +91,7 @@ export function Register() {
         try {
             await loginWithGoogle();
             navigate("/dashboard");
-        } catch (err) {
+        } catch {
             setGoogleError(
                 "No se pudo crear la cuenta con Google. Intentá nuevamente.",
             );

@@ -74,7 +74,7 @@ export const Login = () => {
         try {
             await login(form.email, form.password);
             navigate("/dashboard");
-        } catch (error) {
+        } catch {
             setError({
                 email: "No se pudo iniciar sesión. Revisá tus credenciales.",
             });
@@ -91,7 +91,7 @@ export const Login = () => {
         try {
             await loginWithGoogle();
             navigate("/dashboard");
-        } catch (error) {
+        } catch {
             setGoogleError(
                 "No se pudo iniciar sesión con Google. Intentá nuevamente.",
             );

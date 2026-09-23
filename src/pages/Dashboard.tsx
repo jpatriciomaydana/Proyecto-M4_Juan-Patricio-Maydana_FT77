@@ -8,7 +8,7 @@ import {
 } from "firebase/firestore";
 import { useAuth } from "../hooks/useAuth";
 import { db } from "../services/firebase";
-import { subscribeToTodos, type Todo, } from "../services/todoService";
+import { subscribeToTodos, type Todo } from "../services/todoService";
 import { TodoForm } from "../components/todoForm";
 
 function Dashboard() {
@@ -21,13 +21,8 @@ function Dashboard() {
 
     useEffect(() => {
         if (!user) {
-            setTodos([]);
-            setLoading(false);
             return;
         }
-
-        setLoading(true);
-        setError("");
 
         const unsubscribe = subscribeToTodos(
             user.uid,
@@ -125,12 +120,11 @@ function Dashboard() {
                         </p>
                     </div>
                 </div>
-
-
             </header>
 
             {editingTodo ? (
                 <TodoForm
+                    key={editingTodo.id}
                     mode="edit"
                     todoId={editingTodo.id}
                     initialTitle={editingTodo.title}
@@ -138,7 +132,6 @@ function Dashboard() {
                     onEditTodo={handleEditTodo}
                 />
             ) : (
-
                 <TodoForm
                     mode="create"
                     onAddTodo={handleAddTodo}
@@ -154,13 +147,17 @@ function Dashboard() {
                     {todos.map((todo) => (
                         <li
                             key={todo.id}
-                            className={`task-card ${todo.completed ? "completed" : ""}`}
+                            className={`task-card ${todo.completed ? "completed" : ""
+                                }`}
                         >
-                            {/* Zona izquierda */}
                             <button
-                                className={`task-checkbox ${todo.completed ? "checked" : ""}`}
+                                className={`task-checkbox ${todo.completed ? "checked" : ""
+                                    }`}
                                 onClick={() =>
-                                    handleToggleTodo(todo.id, todo.completed)
+                                    handleToggleTodo(
+                                        todo.id,
+                                        todo.completed
+                                    )
                                 }
                                 type="button"
                                 aria-label={
@@ -172,9 +169,10 @@ function Dashboard() {
                                 {todo.completed && "✓"}
                             </button>
 
-                            {/* Zona central:*/}
                             <div className="task-content">
-                                <h3 className="task-title">{todo.title}</h3>
+                                <h3 className="task-title">
+                                    {todo.title}
+                                </h3>
 
                                 {todo.description && (
                                     <p className="task-description">
@@ -183,15 +181,18 @@ function Dashboard() {
                                 )}
 
                                 <span className="task-status">
-                                    {todo.completed ? "Completada" : "Pendiente"}
+                                    {todo.completed
+                                        ? "Completada"
+                                        : "Pendiente"}
                                 </span>
                             </div>
 
-                            {/* Zona derecha */}
                             <div className="task-actions">
                                 <button
                                     className="task-edit"
-                                    onClick={() => setEditingTodo(todo)}
+                                    onClick={() =>
+                                        setEditingTodo(todo)
+                                    }
                                     type="button"
                                     aria-label="Editar tarea"
                                 >
@@ -200,7 +201,9 @@ function Dashboard() {
 
                                 <button
                                     className="task-delete"
-                                    onClick={() => handleDeleteTodo(todo.id)}
+                                    onClick={() =>
+                                        handleDeleteTodo(todo.id)
+                                    }
                                     type="button"
                                     aria-label="Eliminar tarea"
                                 >

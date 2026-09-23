@@ -1,8 +1,8 @@
-import { createContext, useEffect, useState } from "react";
-import type { ReactNode } from "react";
+import { useEffect, useState } from "react";
 import { auth } from "../services/firebase";
 import type { User } from "firebase/auth";
-import type { AuthContextType } from "../types/auth";
+import { AuthContext } from "./AuthContext.context";
+import type { ReactNode } from "react";
 import {
     createUserWithEmailAndPassword,
     signInWithEmailAndPassword,
@@ -13,8 +13,6 @@ import {
     updateProfile,
 } from "firebase/auth";
 
-
-export const AuthContext = createContext<AuthContextType | null>(null);
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const [user, setUser] = useState<User | null>(null);
     const [loading, setLoading] = useState<boolean>(true);

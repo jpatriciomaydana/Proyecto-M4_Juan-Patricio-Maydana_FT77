@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import type { FormEvent } from "react";
 
 interface TodoFormProps {
@@ -25,10 +25,6 @@ export const TodoForm = ({
     const [title, setTitle] = useState(initialTitle);
     const [description, setDescription] = useState(initialDescription);
 
-    useEffect(() => {
-        setTitle(initialTitle);
-        setDescription(initialDescription);
-    }, [initialTitle, initialDescription]);
 
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
