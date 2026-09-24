@@ -33,7 +33,12 @@ function Dashboard() {
         return () => unsubscribe();
     }, [user]);
 
-    const handleAddTodo = async (title: string, description: string) => {
+    const handleAddTodo = async (
+        title: string,
+        description: string,
+        priority: string,
+        dueDate: string
+    ) => {
         if (!user) {
             throw new Error("No hay usuario autenticado");
         }
@@ -42,6 +47,8 @@ function Dashboard() {
             await addDoc(collection(db, "todos"), {
                 title,
                 description,
+                priority,
+                dueDate,
                 completed: false,
                 userId: user.uid,
             });
@@ -54,7 +61,9 @@ function Dashboard() {
     const handleEditTodo = async (
         todoId: string,
         title: string,
-        description: string
+        description: string,
+        priority: string,
+        dueDate: string
     ) => {
         try {
             const todoRef = doc(db, "todos", todoId);
@@ -62,6 +71,8 @@ function Dashboard() {
             await updateDoc(todoRef, {
                 title,
                 description,
+                priority,
+                dueDate,
             });
 
             setEditingTodo(null);
@@ -128,7 +139,9 @@ function Dashboard() {
                 );
             }
 
-            setSuccessMessage("Resumen enviado correctamente a tu correo.");
+            setSuccessMessage(
+                "Resumen enviado correctamente a tu correo."
+            );
 
             setTimeout(() => {
                 setSuccessMessage("");
@@ -172,6 +185,7 @@ function Dashboard() {
                         <p className="greeting-subtitle">
                             Panel de tareas
                         </p>
+
                         <p className="greeting-description">
                             Organizá tus tareas. Impulsá tu trabajo.
                         </p>
@@ -186,6 +200,8 @@ function Dashboard() {
                     todoId={editingTodo.id}
                     initialTitle={editingTodo.title}
                     initialDescription={editingTodo.description}
+                    initialPriority={editingTodo.priority}
+                    initialDueDate={editingTodo.dueDate}
                     onEditTodo={handleEditTodo}
                 />
             ) : (
@@ -238,11 +254,30 @@ function Dashboard() {
                                     </p>
                                 )}
 
-                                <span className="task-status">
-                                    {todo.completed
-                                        ? "Completada"
-                                        : "Pendiente"}
-                                </span>
+
+                                <div className="task-details">
+                                    <span className={`task-priority priority-${todo.priority}`}>
+                                        {todo.priority === "high"
+                                            ? "🔴 Alta"
+                                            : todo.priority === "medium"
+                                                ? "🟡 Media"
+                                                : "🟢 Baja"}
+                                    </span>
+
+                                    {todo.dueDate && (
+                                        <span className="task-due-date">
+                                            📅 {todo.dueDate}
+                                        </span>
+                                    )}
+
+                                    <span className="task-status">
+                                        {todo.completed
+                                            ? "Completada"
+                                            : "Pendiente"}
+                                    </span>
+                                </div>
+
+
                             </div>
 
                             <div className="task-actions">

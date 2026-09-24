@@ -49,6 +49,8 @@ describe("Dashboard", () => {
                 description: "Tomates y cebollas",
                 completed: false,
                 userId: "user-123",
+                priority: "medium",
+                dueDate: "2026-09-30",
             },
             {
                 id: "todo-2",
@@ -56,6 +58,8 @@ describe("Dashboard", () => {
                 description: "Revisar las diapositivas",
                 completed: true,
                 userId: "user-123",
+                priority: "high",
+                dueDate: "2026-10-01",
             },
         ];
 
@@ -168,6 +172,8 @@ describe("Dashboard", () => {
             {
                 title: "Nueva tarea",
                 description: "Descripción de la nueva tarea",
+                priority: "medium",
+                dueDate: "",
                 completed: false,
                 userId: "user-123",
             }
@@ -189,6 +195,8 @@ describe("Dashboard", () => {
             description: "Descripción original",
             completed: false,
             userId: "user-123",
+            priority: "medium",
+            dueDate: "2026-09-30",
         };
 
         vi.mocked(useAuth).mockReturnValue({
@@ -260,9 +268,12 @@ describe("Dashboard", () => {
             {
                 title: "Título modificado",
                 description: "Descripción modificada",
+                priority: "medium",
+                dueDate: "2026-09-30",
             }
         );
     });
+
     it("marca una tarea como completada", async () => {
         const user = userEvent.setup();
 
@@ -278,6 +289,8 @@ describe("Dashboard", () => {
             description: "Descripción de la tarea",
             completed: false,
             userId: "user-123",
+            priority: "medium",
+            dueDate: "2026-09-30",
         };
 
         vi.mocked(useAuth).mockReturnValue({
@@ -323,6 +336,7 @@ describe("Dashboard", () => {
             }
         );
     });
+
     it("elimina una tarea", async () => {
         const user = userEvent.setup();
 
@@ -338,6 +352,8 @@ describe("Dashboard", () => {
             description: "Descripción de la tarea",
             completed: false,
             userId: "user-123",
+            priority: "medium",
+            dueDate: "2026-09-30",
         };
 
         vi.mocked(useAuth).mockReturnValue({

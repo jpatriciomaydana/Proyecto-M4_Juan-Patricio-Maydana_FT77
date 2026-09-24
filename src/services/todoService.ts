@@ -12,6 +12,8 @@ export interface Todo {
   description: string;
   completed: boolean;
   userId: string;
+  priority: string;
+  dueDate: string;
 }
 
 export const subscribeToTodos = (
@@ -36,3 +38,4 @@ export const subscribeToTodos = (
 
   return unsubscribe;
 };
+

@@ -254,6 +254,56 @@ textarea {
     box-shadow: 0 0 0 3px rgba(62, 92, 67, 0.1);
 }
 
+/* =========================================
+   CAMPOS EXTRA DE LA TAREA
+   ========================================= */
+
+.task-extra-fields {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-top: 2px;
+}
+
+.task-field-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.task-field-label {
+    font-family: var(--font-body);
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--color-musgo);
+}
+
+.task-select,
+.task-date {
+    width: 100%;
+    box-sizing: border-box;
+    cursor: pointer;
+}
+
+/* Ajuste para que los controles nuevos
+   no sean tan altos como los campos principales */
+
+.task-select,
+.task-date {
+    min-height: 42px;
+    padding: 9px 12px;
+}
+
+/* En pantallas pequeñas vuelven a una columna */
+
+@media (max-width: 600px) {
+    .task-extra-fields {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+}
+
+
 .btn-add {
     width: 46px;
     height: 46px;
@@ -565,4 +615,49 @@ textarea {
     .task-card {
         padding: 16px;
     }
+}
+
+
+/* =========================================
+   PRIORIDAD Y FECHA DE VENCIMIENTO
+   ========================================= */
+
+.task-details {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.task-priority,
+.task-due-date,
+.task-status {
+    font-family: var(--font-body);
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.task-priority {
+    padding: 4px 9px;
+    border-radius: 999px;
+}
+
+.priority-high {
+    background: #f9d9df;
+    color: #a8324b;
+}
+
+.priority-medium {
+    background: #f9edc9;
+    color: #80651c;
+}
+
+.priority-low {
+    background: #dcebd5;
+    color: var(--color-musgo);
+}
+
+.task-due-date {
+    color: var(--color-muted);
 }

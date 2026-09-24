@@ -4,7 +4,7 @@ import { describe, expect, it, vi } from "vitest";
 import { TodoForm } from "../components/todoForm";
 
 describe("TodoForm", () => {
-    it("llama a onAddTodo con el título y la descripción ingresados", async () => {
+    it("llama a onAddTodo con el título, descripción, prioridad y fecha ingresados", async () => {
         const onAddTodo = vi.fn();
         const user = userEvent.setup();
 
@@ -29,11 +29,15 @@ describe("TodoForm", () => {
             "Comprar tomates y cebollas"
         );
 
-        await user.click(screen.getByRole("button"));
+        await user.click(screen.getByRole("button", {
+            name: "+"
+        }));
 
         expect(onAddTodo).toHaveBeenCalledWith(
             "Comprar ingredientes",
-            "Comprar tomates y cebollas"
+            "Comprar tomates y cebollas",
+            "medium",
+            ""
         );
     });
 
@@ -62,7 +66,9 @@ describe("TodoForm", () => {
             "Comprar tomates y cebollas"
         );
 
-        await user.click(screen.getByRole("button"));
+        await user.click(screen.getByRole("button", {
+            name: "+"
+        }));
 
         expect(titleInput).toHaveValue("");
         expect(descriptionInput).toHaveValue("");
@@ -99,12 +105,16 @@ describe("TodoForm", () => {
             "Descripción modificada"
         );
 
-        await user.click(screen.getByRole("button"));
+        await user.click(screen.getByRole("button", {
+            name: "✓"
+        }));
 
         expect(onEditTodo).toHaveBeenCalledWith(
             "todo-123",
             "Tarea modificada",
-            "Descripción modificada"
+            "Descripción modificada",
+            "medium",
+            ""
         );
     });
 });
