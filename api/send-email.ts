@@ -43,26 +43,45 @@ export async function POST(request: Request): Promise<Response> {
 
         const totalTasks = todos.length;
 
-        const taskList =
-            todos.length > 0
-                ? todos
-                    .map(
-                        (todo) =>
-                            `- ${todo.completed ? "[COMPLETADA]" : "[PENDIENTE]"} ${todo.title}`
-                    )
-                    .join("\n")
-                : "No hay tareas registradas.";
+        const completedList = todos
+            .filter((todo) => todo.completed)
+            .map(
+                (todo, index) =>
+                    `${index + 1}. ${todo.title || "Sin título"}\n   Descripción: ${todo.description?.trim() || "Sin descripción"}`
+            )
+            .join("\n\n");
+
+        const pendingList = todos
+            .filter((todo) => !todo.completed)
+            .map(
+                (todo, index) =>
+                    `${index + 1}. ${todo.title || "Sin título"}\n   Descripción: ${todo.description?.trim() || "Sin descripción"}`
+            )
+            .join("\n\n");
 
         const message = `
-Resumen de tareas - MateCode
+RESUMEN DE TAREAS - MATECODE
 
+Resumen general
+----------------
 Total de tareas: ${totalTasks}
 Tareas completadas: ${completedTasks}
 Tareas pendientes: ${pendingTasks}
 
-Detalle:
 
-${taskList}
+TAREAS PENDIENTES
+-----------------
+
+${pendingList || "No hay tareas pendientes."}
+
+
+TAREAS COMPLETADAS
+------------------
+
+${completedList || "No hay tareas completadas."}
+
+
+Este correo fue generado automáticamente por MateCode.
 `;
 
         const command = new SendEmailCommand({
