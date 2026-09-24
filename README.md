@@ -368,20 +368,17 @@ La aplicación estará disponible en la URL local indicada por Vite.
 
 ---
 
-# 🧪 Testing Automatizado
+🧪 Testing Automatizado
 
-El proyecto cuenta con una suite de pruebas desarrollada utilizando **Vitest**, **Testing Library** y **jsdom**.
+El proyecto cuenta con una suite de pruebas desarrollada utilizando Vitest, Testing Library y jsdom.
 
 Actualmente la suite contiene:
 
-**4 archivos de test y 12 pruebas aprobadas.**
+4 archivos de test y 15 pruebas aprobadas.
 
 Test Files  4 passed (4)
-Tests       12 passed (12)
-
-
-### Archivos testeados
-
+Tests       15 passed (15)
+Archivos testeados
 Dashboard.test.tsx
 ProtectedRoute.test.tsx
 todoForm.test.tsx
@@ -389,16 +386,40 @@ todoService.test.ts
 
 Las pruebas contemplan componentes, rutas protegidas, formulario y lógica relacionada con el servicio de tareas.
 
----
+Tests de filtros de tareas
 
-## Ejecutar los tests
+Como parte de las funcionalidades adicionales incorporadas al Dashboard, se agregaron pruebas específicas para verificar el sistema de filtros de tareas.
 
-Para ejecutar la suite:
+Los filtros disponibles son:
+
+Todas: muestra todas las tareas.
+Pendientes: muestra únicamente las tareas que todavía no fueron completadas.
+Completadas: muestra únicamente las tareas que fueron completadas.
+
+Los tests verifican que:
+
+El filtro Todas muestre todas las tareas disponibles.
+El filtro Pendientes muestre únicamente las tareas pendientes.
+El filtro Completadas muestre únicamente las tareas completadas.
+
+De esta manera, además de comprobar las funcionalidades principales de la aplicación, la suite también verifica el comportamiento del filtrado de tareas incorporado al Dashboard.
+
+Resultado actual
+
+La ejecución completa de la suite presenta:
+
+Test Files  4 passed (4)
+Tests       15 passed (15)
+
+Todas las pruebas se encuentran aprobadas.
+
+Ejecutar los tests
+
+Para ejecutar la suite completa:
 
 npm test
 
 Para ejecutar los tests en modo watch:
-
 
 npm run test:watch
 
