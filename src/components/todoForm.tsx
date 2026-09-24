@@ -83,31 +83,33 @@ export const TodoForm = ({
     return (
         <form className="task-form" onSubmit={handleSubmit}>
             <div className="task-form-fields">
-                <input
-                    className="task-input"
-                    type="text"
-                    placeholder="Título de la tarea"
-                    value={title}
-                    onChange={(e) => {
-                        setTitle(e.target.value);
-                        setTitleError("");
-                    }}
-                />
+                <div className="task-main-fields">
+                    <input
+                        className="task-input"
+                        type="text"
+                        placeholder="Título de la tarea"
+                        value={title}
+                        onChange={(e) => {
+                            setTitle(e.target.value);
+                            setTitleError("");
+                        }}
+                    />
 
-                {titleError && (
-                    <p className="task-form-error">
-                        {titleError}
-                    </p>
-                )}
+                    {titleError && (
+                        <p className="task-form-error">
+                            {titleError}
+                        </p>
+                    )}
 
-                <textarea
-                    className="task-input task-description-input"
-                    placeholder="Descripción (opcional)"
-                    value={description}
-                    onChange={(e) =>
-                        setDescription(e.target.value)
-                    }
-                />
+                    <textarea
+                        className="task-input task-description-input"
+                        placeholder="Descripción (opcional)"
+                        value={description}
+                        onChange={(e) =>
+                            setDescription(e.target.value)
+                        }
+                    />
+                </div>
 
                 <div className="task-extra-fields">
                     <div className="task-field-group">
@@ -185,4 +187,3 @@ export const TodoForm = ({
         </form>
     );
 };
-

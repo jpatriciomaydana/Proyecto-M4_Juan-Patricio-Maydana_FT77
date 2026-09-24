@@ -396,4 +396,211 @@ describe("Dashboard", () => {
             "todo-reference"
         );
     });
+
+    it("muestra solamente las tareas pendientes al seleccionar el filtro", async () => {
+        const user = userEvent.setup();
+
+        const mockUser = {
+            uid: "user-123",
+            email: "usuario@test.com",
+            displayName: "Usuario de prueba",
+        };
+
+        const mockTodos = [
+            {
+                id: "todo-1",
+                title: "Tarea pendiente",
+                description: "Descripción pendiente",
+                completed: false,
+                userId: "user-123",
+                priority: "medium",
+                dueDate: "2026-09-30",
+            },
+            {
+                id: "todo-2",
+                title: "Tarea completada",
+                description: "Descripción completada",
+                completed: true,
+                userId: "user-123",
+                priority: "high",
+                dueDate: "2026-10-01",
+            },
+        ];
+
+        vi.mocked(useAuth).mockReturnValue({
+            user: mockUser as ReturnType<typeof useAuth>["user"],
+            loading: false,
+            login: vi.fn(),
+            register: vi.fn(),
+            logout: vi.fn(),
+            loginWithGoogle: vi.fn(),
+        });
+
+        vi.mocked(subscribeToTodos).mockImplementation(
+            (_userId, onTodosChange) => {
+                onTodosChange(mockTodos);
+                return vi.fn();
+            }
+        );
+
+        render(<Dashboard />);
+
+        expect(
+            screen.getByText("Tarea pendiente")
+        ).toBeInTheDocument();
+
+        expect(
+            screen.getByText("Tarea completada")
+        ).toBeInTheDocument();
+
+        await user.click(
+            screen.getByRole("button", {
+                name: /Pendientes/i,
+            })
+        );
+
+        expect(
+            screen.getByText("Tarea pendiente")
+        ).toBeInTheDocument();
+
+        expect(
+            screen.queryByText("Tarea completada")
+        ).not.toBeInTheDocument();
+    });
+
+    it("muestra solamente las tareas completadas al seleccionar el filtro", async () => {
+        const user = userEvent.setup();
+
+        const mockUser = {
+            uid: "user-123",
+            email: "usuario@test.com",
+            displayName: "Usuario de prueba",
+        };
+
+        const mockTodos = [
+            {
+                id: "todo-1",
+                title: "Tarea pendiente",
+                description: "Descripción pendiente",
+                completed: false,
+                userId: "user-123",
+                priority: "medium",
+                dueDate: "2026-09-30",
+            },
+            {
+                id: "todo-2",
+                title: "Tarea completada",
+                description: "Descripción completada",
+                completed: true,
+                userId: "user-123",
+                priority: "high",
+                dueDate: "2026-10-01",
+            },
+        ];
+
+        vi.mocked(useAuth).mockReturnValue({
+            user: mockUser as ReturnType<typeof useAuth>["user"],
+            loading: false,
+            login: vi.fn(),
+            register: vi.fn(),
+            logout: vi.fn(),
+            loginWithGoogle: vi.fn(),
+        });
+
+        vi.mocked(subscribeToTodos).mockImplementation(
+            (_userId, onTodosChange) => {
+                onTodosChange(mockTodos);
+                return vi.fn();
+            }
+        );
+
+        render(<Dashboard />);
+
+        await user.click(
+            screen.getByRole("button", {
+                name: /Completadas/i,
+            })
+        );
+
+        expect(
+            screen.getByText("Tarea completada")
+        ).toBeInTheDocument();
+
+        expect(
+            screen.queryByText("Tarea pendiente")
+        ).not.toBeInTheDocument();
+    });
+
+    it("muestra todas las tareas al seleccionar el filtro Todas", async () => {
+        const user = userEvent.setup();
+
+        const mockUser = {
+            uid: "user-123",
+            email: "usuario@test.com",
+            displayName: "Usuario de prueba",
+        };
+
+        const mockTodos = [
+            {
+                id: "todo-1",
+                title: "Tarea pendiente",
+                description: "Descripción pendiente",
+                completed: false,
+                userId: "user-123",
+                priority: "medium",
+                dueDate: "2026-09-30",
+            },
+            {
+                id: "todo-2",
+                title: "Tarea completada",
+                description: "Descripción completada",
+                completed: true,
+                userId: "user-123",
+                priority: "high",
+                dueDate: "2026-10-01",
+            },
+        ];
+
+        vi.mocked(useAuth).mockReturnValue({
+            user: mockUser as ReturnType<typeof useAuth>["user"],
+            loading: false,
+            login: vi.fn(),
+            register: vi.fn(),
+            logout: vi.fn(),
+            loginWithGoogle: vi.fn(),
+        });
+
+        vi.mocked(subscribeToTodos).mockImplementation(
+            (_userId, onTodosChange) => {
+                onTodosChange(mockTodos);
+                return vi.fn();
+            }
+        );
+
+        render(<Dashboard />);
+
+        await user.click(
+            screen.getByRole("button", {
+                name: /Pendientes/i,
+            })
+        );
+
+        expect(
+            screen.queryByText("Tarea completada")
+        ).not.toBeInTheDocument();
+
+        await user.click(
+            screen.getByRole("button", {
+                name: /Todas/i,
+            })
+        );
+
+        expect(
+            screen.getByText("Tarea pendiente")
+        ).toBeInTheDocument();
+
+        expect(
+            screen.getByText("Tarea completada")
+        ).toBeInTheDocument();
+    });
 });

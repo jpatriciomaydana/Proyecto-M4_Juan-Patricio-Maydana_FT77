@@ -8,8 +8,13 @@ import {
 } from "firebase/firestore";
 import { useAuth } from "../hooks/useAuth";
 import { db } from "../services/firebase";
-import { subscribeToTodos, type Todo } from "../services/todoService";
+import {
+    subscribeToTodos,
+    type Todo,
+} from "../services/todoService";
 import { TodoForm } from "../components/todoForm";
+
+type TodoFilter = "all" | "pending" | "completed";
 
 function Dashboard() {
     const { user } = useAuth();
@@ -19,16 +24,20 @@ function Dashboard() {
     const [error, setError] = useState("");
     const [successMessage, setSuccessMessage] = useState("");
     const [editingTodo, setEditingTodo] = useState<Todo | null>(null);
+    const [filter, setFilter] = useState<TodoFilter>("all");
 
     useEffect(() => {
         if (!user) {
             return;
         }
 
-        const unsubscribe = subscribeToTodos(user.uid, (todos) => {
-            setTodos(todos);
-            setLoading(false);
-        });
+        const unsubscribe = subscribeToTodos(
+            user.uid,
+            (todos) => {
+                setTodos(todos);
+                setLoading(false);
+            }
+        );
 
         return () => unsubscribe();
     }, [user]);
@@ -155,6 +164,26 @@ function Dashboard() {
         }
     };
 
+    const pendingCount = todos.filter(
+        (todo) => !todo.completed
+    ).length;
+
+    const completedCount = todos.filter(
+        (todo) => todo.completed
+    ).length;
+
+    const filteredTodos = todos.filter((todo) => {
+        if (filter === "pending") {
+            return !todo.completed;
+        }
+
+        if (filter === "completed") {
+            return todo.completed;
+        }
+
+        return true;
+    });
+
     if (loading) {
         return (
             <main className="app-container">
@@ -214,11 +243,65 @@ function Dashboard() {
                 />
             )}
 
+            <section className="task-filter-section">
+                <p className="section-label">Mis tareas</p>
+
+                <div
+                    className="task-filters"
+                    role="group"
+                    aria-label="Filtrar tareas"
+                >
+                    <button
+                        type="button"
+                        className={`task-filter ${filter === "all" ? "active" : ""
+                            }`}
+                        onClick={() => setFilter("all")}
+                    >
+                        Todas
+                        <span className="task-filter-count">
+                            {todos.length}
+                        </span>
+                    </button>
+
+                    <button
+                        type="button"
+                        className={`task-filter ${filter === "pending" ? "active" : ""
+                            }`}
+                        onClick={() => setFilter("pending")}
+                    >
+                        Pendientes
+                        <span className="task-filter-count">
+                            {pendingCount}
+                        </span>
+                    </button>
+
+                    <button
+                        type="button"
+                        className={`task-filter ${filter === "completed" ? "active" : ""
+                            }`}
+                        onClick={() => setFilter("completed")}
+                    >
+                        Completadas
+                        <span className="task-filter-count">
+                            {completedCount}
+                        </span>
+                    </button>
+                </div>
+            </section>
+
             {todos.length === 0 ? (
-                <p>No tenés tareas todavía.</p>
+                <p className="empty-state">
+                    No tenés tareas todavía.
+                </p>
+            ) : filteredTodos.length === 0 ? (
+                <p className="empty-state">
+                    {filter === "pending"
+                        ? "No tenés tareas pendientes."
+                        : "No tenés tareas completadas."}
+                </p>
             ) : (
                 <ul className="task-list">
-                    {todos.map((todo) => (
+                    {filteredTodos.map((todo) => (
                         <li
                             key={todo.id}
                             className={`task-card ${todo.completed ? "completed" : ""
@@ -254,9 +337,10 @@ function Dashboard() {
                                     </p>
                                 )}
 
-
                                 <div className="task-details">
-                                    <span className={`task-priority priority-${todo.priority}`}>
+                                    <span
+                                        className={`task-priority priority-${todo.priority}`}
+                                    >
                                         {todo.priority === "high"
                                             ? "🔴 Alta"
                                             : todo.priority === "medium"
@@ -276,8 +360,6 @@ function Dashboard() {
                                             : "Pendiente"}
                                     </span>
                                 </div>
-
-
                             </div>
 
                             <div className="task-actions">
