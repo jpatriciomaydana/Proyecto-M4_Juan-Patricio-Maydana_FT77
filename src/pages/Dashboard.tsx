@@ -42,15 +42,14 @@ function Dashboard() {
 
         try {
             await addDoc(collection(db, "todos"), {
-                title: title,
-                description: description,
+                title,
+                description,
                 completed: false,
                 userId: user.uid,
             });
-        } catch (error) {
-            console.error(error);
+        } catch {
             setError("No se pudo crear la tarea");
-            throw error;
+            throw new Error("No se pudo crear la tarea");
         }
     };
 
@@ -68,8 +67,7 @@ function Dashboard() {
             });
 
             setEditingTodo(null);
-        } catch (error) {
-            console.error(error);
+        } catch {
             setError("No se pudo editar la tarea");
         }
     };
@@ -84,8 +82,7 @@ function Dashboard() {
             await updateDoc(todoRef, {
                 completed: !completed,
             });
-        } catch (error) {
-            console.error(error);
+        } catch {
             setError("No se pudo actualizar la tarea");
         }
     };
@@ -95,14 +92,53 @@ function Dashboard() {
             const todoRef = doc(db, "todos", todoId);
 
             await deleteDoc(todoRef);
-        } catch (error) {
-            console.error(error);
+        } catch {
             setError("No se pudo eliminar la tarea");
         }
     };
 
+    const handleSendSummary = async () => {
+        if (!user?.email) {
+            setError("No hay un correo asociado al usuario");
+            return;
+        }
+
+        try {
+            setError("");
+
+            const response = await fetch("/api/send-email", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    to: user.email,
+                    todos: todos.map((todo) => ({
+                        title: todo.title,
+                        description: todo.description,
+                        completed: todo.completed,
+                    })),
+                }),
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(
+                    data.message || "No se pudo enviar el resumen"
+                );
+            }
+        } catch {
+            setError("No se pudo enviar el resumen por correo");
+        }
+    };
+
     if (loading) {
-        return <p>Cargando tareas...</p>;
+        return (
+            <main className="app-container">
+                <p>Cargando tareas...</p>
+            </main>
+        );
     }
 
     return (
@@ -135,6 +171,7 @@ function Dashboard() {
                 <TodoForm
                     mode="create"
                     onAddTodo={handleAddTodo}
+                    onSendSummary={handleSendSummary}
                 />
             )}
 
