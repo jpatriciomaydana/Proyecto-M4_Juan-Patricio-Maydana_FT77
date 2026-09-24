@@ -154,6 +154,15 @@ function Dashboard() {
         <main className="app-container">
             <header className="app-header">
                 <div className="app-header-user">
+                    {user?.photoURL && (
+                        <img
+                            className="dashboard-avatar"
+                            src={user.photoURL}
+                            alt={`Foto de perfil de ${user.displayName || user.email
+                                }`}
+                        />
+                    )}
+
                     <div>
                         <h1 className="greeting-title">
                             Bienvenido{" "}
@@ -162,6 +171,9 @@ function Dashboard() {
 
                         <p className="greeting-subtitle">
                             Panel de tareas
+                        </p>
+                        <p className="greeting-description">
+                            Organizá tus tareas. Impulsá tu trabajo.
                         </p>
                     </div>
                 </div>

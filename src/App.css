@@ -87,27 +87,77 @@ textarea {
     display: flex;
     align-items: center;
     justify-content: center;
-    text-align: center;
-    gap: 1rem;
+
     margin-bottom: 2rem;
+    padding: 1.75rem 2rem;
+
+    background: linear-gradient(135deg,
+            var(--color-neblina),
+            #ffffff);
+
+    border: 1px solid rgba(143, 191, 111, 0.35);
+    border-radius: var(--radius-md);
+
+    box-shadow: var(--shadow-card);
+
+    position: relative;
+    overflow: hidden;
+}
+
+.app-header::before {
+    content: "";
+    position: absolute;
+
+    top: 0;
+    left: 0;
+
+    width: 6px;
+    height: 100%;
+
+    background: var(--color-musgo);
 }
 
 .app-header-user {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 16px;
+}
+
+.dashboard-avatar {
+    width: 64px;
+    height: 64px;
+
+    flex-shrink: 0;
+
+    border-radius: 50%;
+    object-fit: cover;
+
+    border: 3px solid var(--color-brote);
+    box-shadow: var(--shadow-soft);
 }
 
 .greeting-title {
-    font-size: 1.3rem;
+    font-size: 1.8rem;
     line-height: 1.2;
+    color: var(--color-tierra);
 }
 
 .greeting-subtitle {
-    margin-top: 4px;
+    margin-top: 6px;
+
+    font-size: 1rem;
+    font-weight: 700;
+
+    color: var(--color-musgo);
+}
+
+.greeting-description {
+    margin-top: 5px;
+
     font-size: 0.85rem;
     color: var(--color-muted);
 }
+
 
 .icon-button {
     border: none;

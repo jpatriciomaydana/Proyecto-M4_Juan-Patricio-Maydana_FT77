@@ -62,12 +62,37 @@
     gap: 0.75rem;
 }
 
+.navbar-avatar {
+    width: 40px;
+    height: 40px;
+
+    border-radius: 50%;
+    object-fit: cover;
+
+    border: 2px solid var(--color-neblina);
+
+    box-shadow: var(--shadow-soft);
+}
+
+.navbar-user-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.15rem;
+}
+
+.navbar-greeting {
+    color: var(--color-musgo);
+    font-size: 0.9rem;
+    font-weight: 700;
+}
+
 .navbar-email {
     max-width: 260px;
 
     color: var(--color-muted);
-    font-size: 0.85rem;
-    font-weight: 600;
+    font-size: 0.75rem;
+    font-weight: 500;
 
     overflow: hidden;
     text-overflow: ellipsis;
@@ -161,8 +186,22 @@
         gap: 0.5rem;
     }
 
+    .navbar-avatar {
+        width: 34px;
+        height: 34px;
+    }
+
+    .navbar-user-info {
+        align-items: flex-end;
+    }
+
+    .navbar-greeting {
+        font-size: 0.8rem;
+    }
+
     .navbar-email {
         max-width: 140px;
+        font-size: 0.7rem;
     }
 
     .btn-logout {
@@ -191,7 +230,77 @@
         align-items: flex-end;
     }
 
+    .navbar-user-info {
+        align-items: flex-end;
+    }
+
     .navbar-email {
         max-width: 120px;
     }
+}
+
+/* =========================================
+   IDENTIDAD MATECODE
+   ========================================= */
+
+.brand-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    color: inherit;
+}
+
+.brand-logo {
+    position: relative;
+    width: 38px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    background: var(--color-musgo);
+    color: #fff;
+    flex-shrink: 0;
+}
+
+.brand-logo-m {
+    font-family: var(--font-display);
+    font-size: 1.35rem;
+    font-weight: 600;
+    line-height: 1;
+}
+
+.brand-logo-check {
+    position: absolute;
+    right: 4px;
+    bottom: 3px;
+    font-family: var(--font-body);
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--color-brote);
+}
+
+.brand-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1px;
+}
+
+.brand-name {
+    font-family: var(--font-display);
+    font-size: 1.35rem;
+    font-weight: 600;
+    line-height: 1;
+    color: var(--color-tierra);
+}
+
+.brand-tagline {
+    font-family: var(--font-body);
+    font-size: 0.62rem;
+    font-weight: 600;
+    line-height: 1.2;
+    color: var(--color-musgo);
+    white-space: nowrap;
 }
