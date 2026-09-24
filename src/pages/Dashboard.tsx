@@ -17,6 +17,7 @@ function Dashboard() {
     const [todos, setTodos] = useState<Todo[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
+    const [successMessage, setSuccessMessage] = useState("");
     const [editingTodo, setEditingTodo] = useState<Todo | null>(null);
 
     useEffect(() => {
@@ -24,13 +25,10 @@ function Dashboard() {
             return;
         }
 
-        const unsubscribe = subscribeToTodos(
-            user.uid,
-            (todos) => {
-                setTodos(todos);
-                setLoading(false);
-            }
-        );
+        const unsubscribe = subscribeToTodos(user.uid, (todos) => {
+            setTodos(todos);
+            setLoading(false);
+        });
 
         return () => unsubscribe();
     }, [user]);
@@ -105,6 +103,7 @@ function Dashboard() {
 
         try {
             setError("");
+            setSuccessMessage("");
 
             const response = await fetch("/api/send-email", {
                 method: "POST",
@@ -128,8 +127,18 @@ function Dashboard() {
                     data.message || "No se pudo enviar el resumen"
                 );
             }
+
+            setSuccessMessage("Resumen enviado correctamente a tu correo.");
+
+            setTimeout(() => {
+                setSuccessMessage("");
+            }, 3000);
         } catch {
             setError("No se pudo enviar el resumen por correo");
+
+            setTimeout(() => {
+                setError("");
+            }, 3000);
         }
     };
 
@@ -172,10 +181,10 @@ function Dashboard() {
                     mode="create"
                     onAddTodo={handleAddTodo}
                     onSendSummary={handleSendSummary}
+                    successMessage={successMessage}
+                    errorMessage={error}
                 />
             )}
-
-            {error && <p>{error}</p>}
 
             {todos.length === 0 ? (
                 <p>No tenés tareas todavía.</p>

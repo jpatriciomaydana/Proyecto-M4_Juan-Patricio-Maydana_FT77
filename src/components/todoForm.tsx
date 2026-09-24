@@ -13,6 +13,8 @@ interface TodoFormProps {
     todoId?: string;
     initialTitle?: string;
     initialDescription?: string;
+    successMessage?: string;
+    errorMessage?: string;
 }
 
 export const TodoForm = ({
@@ -23,22 +25,32 @@ export const TodoForm = ({
     todoId,
     initialTitle = "",
     initialDescription = "",
+    successMessage = "",
+    errorMessage = "",
 }: TodoFormProps) => {
     const [title, setTitle] = useState(initialTitle);
     const [description, setDescription] = useState(initialDescription);
+    const [titleError, setTitleError] = useState("");
 
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
 
+        if (!title.trim()) {
+            setTitleError("El título de la tarea es obligatorio");
+            return;
+        }
+
+        setTitleError("");
+
         if (mode === "create" && onAddTodo) {
-            await onAddTodo(title, description);
+            await onAddTodo(title.trim(), description);
 
             setTitle("");
             setDescription("");
         }
 
         if (mode === "edit" && onEditTodo && todoId) {
-            await onEditTodo(todoId, title, description);
+            await onEditTodo(todoId, title.trim(), description);
         }
     };
 
@@ -50,8 +62,15 @@ export const TodoForm = ({
                     type="text"
                     placeholder="Título de la tarea"
                     value={title}
-                    onChange={(e) => setTitle(e.target.value)}
+                    onChange={(e) => {
+                        setTitle(e.target.value);
+                        setTitleError("");
+                    }}
                 />
+
+                {titleError && (
+                    <p className="task-form-error">{titleError}</p>
+                )}
 
                 <textarea
                     className="task-input task-description-input"
@@ -63,13 +82,27 @@ export const TodoForm = ({
 
             <div className="task-form-actions">
                 {mode === "create" && onSendSummary && (
-                    <button
-                        className="btn-summary"
-                        type="button"
-                        onClick={onSendSummary}
-                    >
-                        Enviar resumen al mail
-                    </button>
+                    <>
+                        <button
+                            className="btn-summary"
+                            type="button"
+                            onClick={onSendSummary}
+                        >
+                            Enviar resumen al mail
+                        </button>
+
+                        {successMessage && (
+                            <p className="task-form-success">
+                                {successMessage}
+                            </p>
+                        )}
+
+                        {errorMessage && (
+                            <p className="task-form-error">
+                                {errorMessage}
+                            </p>
+                        )}
+                    </>
                 )}
 
                 <button className="btn-add" type="submit">
